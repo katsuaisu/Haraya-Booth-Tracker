@@ -31,7 +31,7 @@
 
             <div class="data-controls">
                 <div class="total-spent-display">
-                    <label>Total Revenue</label>
+                    <label>Lifetime Revenue</label>
                     <span id="global-total">₱0.00</span>
                 </div>
                 <button class="secondary-btn" onclick="exportData()">Export JSON</button>
@@ -52,220 +52,224 @@
                         <form id="transaction-form" onsubmit="handleTransactionSubmit(event)">
                             <input type="hidden" id="transaction-id" value="">
 
-                            <div class="ios-section-title">Details</div>
-                            <div class="ios-list">
-                                <div class="ios-row">
-                                    <label>Client</label>
-                                    <input type="text" id="client" required placeholder="John Doe">
-                                </div>
-                                <div class="ios-row">
-                                    <label>Target</label>
-                                    <input type="text" id="nominee" required placeholder="Target Name">
-                                </div>
-                                <div class="ios-row">
-                                    <label>Batch</label>
-                                    <div class="select-wrapper">
-                                        <select id="batch" required>
-                                            <option value="2031">2031</option>
-                                            <option value="2030">2030</option>
-                                            <option value="2029">2029</option>
-                                            <option value="2028">2028</option>
-                                            <option value="2027">2027</option>
-                                            <option value="2026">2026</option>
-                                        </select>
+                            <div class="form-scrollable-content">
+                                <div class="ios-section-title">Details</div>
+                                <div class="ios-list">
+                                    <div class="ios-row">
+                                        <label>Client</label>
+                                        <input type="text" id="client" required placeholder="John Doe">
+                                    </div>
+                                    <div class="ios-row">
+                                        <label>Target</label>
+                                        <input type="text" id="nominee" required placeholder="Target Name">
+                                    </div>
+                                    <div class="ios-row">
+                                        <label>Batch</label>
+                                        <div class="select-wrapper">
+                                            <select id="batch" required>
+                                                <option value="2031">2031</option>
+                                                <option value="2030">2030</option>
+                                                <option value="2029">2029</option>
+                                                <option value="2028">2028</option>
+                                                <option value="2027">2027</option>
+                                                <option value="2026">2026</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="ios-section-title">Packages</div>
-                            <div class="ios-grid-2">
-                                <label class="ios-card-item">
-                                    <div class="card-content">
-                                        <span class="row-main">Keeping It Simple</span>
-                                        <span class="row-sub">₱50</span>
-                                    </div>
-                                    <div class="check-container">
-                                        <input type="checkbox" class="pkg-check" value="simple" data-price="50"
+                                <div class="ios-section-title">Packages</div>
+                                <div class="ios-grid-2">
+                                    <label class="ios-card-item">
+                                        <div class="card-content">
+                                            <span class="row-main">Keeping It Simple</span>
+                                            <span class="row-sub">₱50</span>
+                                        </div>
+                                        <div class="check-container">
+                                            <input type="checkbox" class="pkg-check" value="simple" data-price="50"
+                                                onchange="calculateLiveTotal()">
+                                            <div class="checkmark-circle"></div>
+                                        </div>
+                                    </label>
+
+                                    <label class="ios-card-item">
+                                        <div class="card-content">
+                                            <span class="row-main">Laundry Day</span>
+                                            <span class="row-sub">₱70</span>
+                                        </div>
+                                        <div class="check-container">
+                                            <input type="checkbox" class="pkg-check" value="laundry" data-price="70"
+                                                onchange="calculateLiveTotal()">
+                                            <div class="checkmark-circle"></div>
+                                        </div>
+                                    </label>
+
+                                    <label class="ios-card-item">
+                                        <div class="card-content">
+                                            <span class="row-main">Let’s Cook A Meal!</span>
+                                            <span class="row-sub">₱130</span>
+                                        </div>
+                                        <div class="check-container">
+                                            <input type="checkbox" class="pkg-check" value="cook" data-price="130"
+                                                onchange="calculateLiveTotal()">
+                                            <div class="checkmark-circle"></div>
+                                        </div>
+                                    </label>
+
+                                    <label class="ios-card-item">
+                                        <div class="card-content">
+                                            <span class="row-main">Ice Cream Sundae</span>
+                                            <span class="row-sub">₱200</span>
+                                        </div>
+                                        <div class="check-container">
+                                            <input type="checkbox" class="pkg-check" value="icecream" data-price="200"
+                                                onchange="calculateLiveTotal()">
+                                            <div class="checkmark-circle"></div>
+                                        </div>
+                                    </label>
+
+                                    <label class="ios-card-item full-width">
+                                        <div class="card-content">
+                                            <span class="row-main">Hotdog!</span>
+                                            <span class="row-sub">₱250</span>
+                                        </div>
+                                        <div class="check-container">
+                                            <input type="checkbox" class="pkg-check" value="hotdog" data-price="250"
+                                                onchange="calculateLiveTotal()">
+                                            <div class="checkmark-circle"></div>
+                                        </div>
+                                    </label>
+                                </div>
+
+                                <div class="ios-section-title">Make Your Own Mix / Add-ons</div>
+                                <div class="ios-grid-3">
+                                    <label class="ios-mini-card">
+                                        <input type="checkbox" id="garlic-addon" class="ingredient-check"
+                                            value="Garlic Clove" data-price="20" onchange="calculateLiveTotal()">
+                                        <div class="checkmark-circle small"></div>
+                                        <span class="mini-label">Garlic (+₱20)</span>
+                                    </label>
+
+                                    <label class="ios-mini-card">
+                                        <input type="checkbox" class="ingredient-check" value="Flour" data-price="30"
                                             onchange="calculateLiveTotal()">
-                                        <div class="checkmark-circle"></div>
-                                    </div>
-                                </label>
+                                        <div class="checkmark-circle small"></div>
+                                        <span class="mini-label">Flour (+₱30)</span>
+                                    </label>
 
-                                <label class="ios-card-item">
-                                    <div class="card-content">
-                                        <span class="row-main">Laundry Day</span>
-                                        <span class="row-sub">₱70</span>
-                                    </div>
-                                    <div class="check-container">
-                                        <input type="checkbox" class="pkg-check" value="laundry" data-price="70"
+                                    <label class="ios-mini-card">
+                                        <input type="checkbox" class="ingredient-check" value="Soy Sauce"
+                                            data-price="30" onchange="calculateLiveTotal()">
+                                        <div class="checkmark-circle small"></div>
+                                        <span class="mini-label">Soy Sauce (+₱30)</span>
+                                    </label>
+
+                                    <label class="ios-mini-card">
+                                        <input type="checkbox" class="ingredient-check" value="Fish Sauce"
+                                            data-price="30" onchange="calculateLiveTotal()">
+                                        <div class="checkmark-circle small"></div>
+                                        <span class="mini-label">Fish Sauce (+₱30)</span>
+                                    </label>
+
+                                    <label class="ios-mini-card">
+                                        <input type="checkbox" class="ingredient-check" value="Vinegar" data-price="30"
                                             onchange="calculateLiveTotal()">
-                                        <div class="checkmark-circle"></div>
-                                    </div>
-                                </label>
+                                        <div class="checkmark-circle small"></div>
+                                        <span class="mini-label">Vinegar (+₱30)</span>
+                                    </label>
 
-                                <label class="ios-card-item">
-                                    <div class="card-content">
-                                        <span class="row-main">Let’s Cook A Meal!</span>
-                                        <span class="row-sub">₱130</span>
-                                    </div>
-                                    <div class="check-container">
-                                        <input type="checkbox" class="pkg-check" value="cook" data-price="130"
+                                    <label class="ios-mini-card">
+                                        <input type="checkbox" class="ingredient-check" value="Confetti" data-price="30"
                                             onchange="calculateLiveTotal()">
-                                        <div class="checkmark-circle"></div>
-                                    </div>
-                                </label>
+                                        <div class="checkmark-circle small"></div>
+                                        <span class="mini-label">Confetti (+₱30)</span>
+                                    </label>
 
-                                <label class="ios-card-item">
-                                    <div class="card-content">
-                                        <span class="row-main">Ice Cream Sundae</span>
-                                        <span class="row-sub">₱200</span>
-                                    </div>
-                                    <div class="check-container">
-                                        <input type="checkbox" class="pkg-check" value="icecream" data-price="200"
+                                    <label class="ios-mini-card">
+                                        <input type="checkbox" class="ingredient-check" value="Cooking Oil"
+                                            data-price="50" onchange="calculateLiveTotal()">
+                                        <div class="checkmark-circle small"></div>
+                                        <span class="mini-label">Oil (+₱50)</span>
+                                    </label>
+
+                                    <label class="ios-mini-card">
+                                        <input type="checkbox" class="ingredient-check" value="Whipped Cream"
+                                            data-price="50" onchange="calculateLiveTotal()">
+                                        <div class="checkmark-circle small"></div>
+                                        <span class="mini-label">W. Cream (+₱50)</span>
+                                    </label>
+
+                                    <label class="ios-mini-card">
+                                        <input type="checkbox" class="ingredient-check" value="Ketchup" data-price="50"
                                             onchange="calculateLiveTotal()">
-                                        <div class="checkmark-circle"></div>
-                                    </div>
-                                </label>
+                                        <div class="checkmark-circle small"></div>
+                                        <span class="mini-label">Ketchup (+₱50)</span>
+                                    </label>
 
-                                <label class="ios-card-item full-width">
-                                    <div class="card-content">
-                                        <span class="row-main">Hotdog!</span>
-                                        <span class="row-sub">₱250</span>
-                                    </div>
-                                    <div class="check-container">
-                                        <input type="checkbox" class="pkg-check" value="hotdog" data-price="250"
+                                    <label class="ios-mini-card">
+                                        <input type="checkbox" class="ingredient-check" value="Mayo" data-price="50"
                                             onchange="calculateLiveTotal()">
-                                        <div class="checkmark-circle"></div>
+                                        <div class="checkmark-circle small"></div>
+                                        <span class="mini-label">Mayo (+₱50)</span>
+                                    </label>
+
+                                    <label class="ios-mini-card">
+                                        <input type="checkbox" class="ingredient-check" value="Mustard" data-price="50"
+                                            onchange="calculateLiveTotal()">
+                                        <div class="checkmark-circle small"></div>
+                                        <span class="mini-label">Mustard (+₱50)</span>
+                                    </label>
+
+                                    <label class="ios-mini-card">
+                                        <input type="checkbox" class="ingredient-check" value="Milk" data-price="50"
+                                            onchange="calculateLiveTotal()">
+                                        <div class="checkmark-circle small"></div>
+                                        <span class="mini-label">Milk (+₱50)</span>
+                                    </label>
+
+                                    <label class="ios-mini-card">
+                                        <input type="checkbox" class="ingredient-check" value="Laundry Powder"
+                                            data-price="50" onchange="calculateLiveTotal()">
+                                        <div class="checkmark-circle small"></div>
+                                        <span class="mini-label">Powder (+₱50)</span>
+                                    </label>
+                                </div>
+
+                                <div class="ios-section-title">Conclusion</div>
+                                <div class="ios-list">
+                                    <div class="ios-row">
+                                        <label>Status</label>
+                                        <div class="select-wrapper">
+                                            <select id="status" required>
+                                                <option value="Chase">Chase</option>
+                                                <option value="Assassinated">Assassinated</option>
+                                                <option value="Bailed">Bailed</option>
+                                                <option value="Not Found">Not Found</option>
+                                            </select>
+                                        </div>
                                     </div>
-                                </label>
-                            </div>
-
-                            <div class="ios-section-title">Make Your Own Mix / Add-ons</div>
-                            <div class="ios-grid-3">
-                                <label class="ios-mini-card">
-                                    <input type="checkbox" id="garlic-addon" class="ingredient-check"
-                                        value="Garlic Clove" data-price="20" onchange="calculateLiveTotal()">
-                                    <div class="checkmark-circle small"></div>
-                                    <span class="mini-label">Garlic (+₱20)</span>
-                                </label>
-
-                                <label class="ios-mini-card">
-                                    <input type="checkbox" class="ingredient-check" value="Flour" data-price="30"
-                                        onchange="calculateLiveTotal()">
-                                    <div class="checkmark-circle small"></div>
-                                    <span class="mini-label">Flour (+₱30)</span>
-                                </label>
-
-                                <label class="ios-mini-card">
-                                    <input type="checkbox" class="ingredient-check" value="Soy Sauce" data-price="30"
-                                        onchange="calculateLiveTotal()">
-                                    <div class="checkmark-circle small"></div>
-                                    <span class="mini-label">Soy Sauce (+₱30)</span>
-                                </label>
-
-                                <label class="ios-mini-card">
-                                    <input type="checkbox" class="ingredient-check" value="Fish Sauce" data-price="30"
-                                        onchange="calculateLiveTotal()">
-                                    <div class="checkmark-circle small"></div>
-                                    <span class="mini-label">Fish Sauce (+₱30)</span>
-                                </label>
-
-                                <label class="ios-mini-card">
-                                    <input type="checkbox" class="ingredient-check" value="Vinegar" data-price="30"
-                                        onchange="calculateLiveTotal()">
-                                    <div class="checkmark-circle small"></div>
-                                    <span class="mini-label">Vinegar (+₱30)</span>
-                                </label>
-
-                                <label class="ios-mini-card">
-                                    <input type="checkbox" class="ingredient-check" value="Confetti" data-price="30"
-                                        onchange="calculateLiveTotal()">
-                                    <div class="checkmark-circle small"></div>
-                                    <span class="mini-label">Confetti (+₱30)</span>
-                                </label>
-
-                                <label class="ios-mini-card">
-                                    <input type="checkbox" class="ingredient-check" value="Cooking Oil" data-price="50"
-                                        onchange="calculateLiveTotal()">
-                                    <div class="checkmark-circle small"></div>
-                                    <span class="mini-label">Oil (+₱50)</span>
-                                </label>
-
-                                <label class="ios-mini-card">
-                                    <input type="checkbox" class="ingredient-check" value="Whipped Cream"
-                                        data-price="50" onchange="calculateLiveTotal()">
-                                    <div class="checkmark-circle small"></div>
-                                    <span class="mini-label">W. Cream (+₱50)</span>
-                                </label>
-
-                                <label class="ios-mini-card">
-                                    <input type="checkbox" class="ingredient-check" value="Ketchup" data-price="50"
-                                        onchange="calculateLiveTotal()">
-                                    <div class="checkmark-circle small"></div>
-                                    <span class="mini-label">Ketchup (+₱50)</span>
-                                </label>
-
-                                <label class="ios-mini-card">
-                                    <input type="checkbox" class="ingredient-check" value="Mayo" data-price="50"
-                                        onchange="calculateLiveTotal()">
-                                    <div class="checkmark-circle small"></div>
-                                    <span class="mini-label">Mayo (+₱50)</span>
-                                </label>
-
-                                <label class="ios-mini-card">
-                                    <input type="checkbox" class="ingredient-check" value="Mustard" data-price="50"
-                                        onchange="calculateLiveTotal()">
-                                    <div class="checkmark-circle small"></div>
-                                    <span class="mini-label">Mustard (+₱50)</span>
-                                </label>
-
-                                <label class="ios-mini-card">
-                                    <input type="checkbox" class="ingredient-check" value="Milk" data-price="50"
-                                        onchange="calculateLiveTotal()">
-                                    <div class="checkmark-circle small"></div>
-                                    <span class="mini-label">Milk (+₱50)</span>
-                                </label>
-
-                                <label class="ios-mini-card">
-                                    <input type="checkbox" class="ingredient-check" value="Laundry Powder"
-                                        data-price="50" onchange="calculateLiveTotal()">
-                                    <div class="checkmark-circle small"></div>
-                                    <span class="mini-label">Powder (+₱50)</span>
-                                </label>
-                            </div>
-
-                            <div class="ios-section-title">Conclusion</div>
-                            <div class="ios-list">
-                                <div class="ios-row">
-                                    <label>Status</label>
-                                    <div class="select-wrapper">
-                                        <select id="status" required>
-                                            <option value="Chase">Chase</option>
-                                            <option value="Assassinated">Assassinated</option>
-                                            <option value="Bailed">Bailed</option>
-                                            <option value="Not Found">Not Found</option>
-                                        </select>
+                                    <div class="ios-row">
+                                        <textarea id="notes" rows="3" placeholder="Additional details..."></textarea>
                                     </div>
                                 </div>
-                                <div class="ios-row">
-                                    <textarea id="notes" rows="3" placeholder="Additional details..."></textarea>
+                            </div>
+                            <div class="form-footer">
+                                <div class="total-bar">
+                                    <span>Total</span>
+                                    <span id="live-total">₱0</span>
                                 </div>
-                            </div>
 
-                            <div class="total-bar">
-                                <span>Total</span>
-                                <span id="live-total">₱0</span>
-                            </div>
+                                <div class="action-buttons">
+                                    <button type="submit" id="submit-btn" class="primary-btn">Complete
+                                        Transaction</button>
+                                    <button type="button" id="cancel-btn" class="secondary-btn hidden"
+                                        onclick="cancelEdit()">Cancel</button>
+                                </div>
 
-                            <div class="action-buttons">
-                                <button type="submit" id="submit-btn" class="primary-btn">Complete Transaction</button>
-                                <button type="button" id="cancel-btn" class="secondary-btn hidden"
-                                    onclick="cancelEdit()">Cancel</button>
-                            </div>
-
-                            <div id="delete-section" class="delete-section hidden">
-                                <button type="button" class="delete-btn" onclick="confirmDelete()">Delete
-                                    Transaction</button>
+                                <div id="delete-section" class="delete-section hidden">
+                                    <button type="button" class="delete-btn" onclick="confirmDelete()">Delete
+                                        Transaction</button>
+                                </div>
                             </div>
 
                         </form>

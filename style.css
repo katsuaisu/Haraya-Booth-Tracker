@@ -172,6 +172,22 @@ body {
     align-items: start;
 }
 
+
+.form-footer {
+    position: sticky;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    margin: 0 -20px -20px -20px;
+    padding: 15px 20px 20px 20px;
+    border-top: 1px solid #C6C6C8;
+    z-index: 99;
+    border-bottom-left-radius: var(--radius);
+    border-bottom-right-radius: var(--radius);
+    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.02);
+}
+
 .ios-section-title {
     font-size: 13px;
     text-transform: uppercase;
@@ -363,11 +379,9 @@ input:checked+.checkmark-circle::after {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 4px;
+    padding: 10px 0 20px;
     font-weight: 700;
     font-size: 18px;
-    border-top: 1px solid #E5E5EA;
-    margin-top: 20px;
 }
 
 #live-total {
@@ -379,7 +393,6 @@ input:checked+.checkmark-circle::after {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 12px;
-    margin-bottom: 24px;
 }
 
 .primary-btn {
@@ -621,6 +634,8 @@ input:checked+.checkmark-circle::after {
     .content-area {
         padding: 16px;
         overflow: visible;
+        padding-bottom: 220px;
+        
     }
 
     .split-view {
@@ -630,5 +645,17 @@ input:checked+.checkmark-circle::after {
     .ios-grid-2,
     .ios-grid-3 {
         grid-template-columns: 1fr 1fr;
+    }
+
+    
+    .form-footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        margin: 0;
+        border-radius: 0;
+        box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
     }
 }
