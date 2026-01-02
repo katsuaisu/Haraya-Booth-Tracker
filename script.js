@@ -87,9 +87,30 @@ function switchTab(tabId) {
 }
 
 function calculateLiveTotal() {
-    let total = 0;
-    document.querySelectorAll('.pkg-check:checked').forEach(chk => total += parseInt(chk.dataset.price || 0));
-    document.querySelectorAll('.ingredient-check:checked').forEach(chk => total += parseInt(chk.dataset.price || 0));
+    let packageTotal = 0;
+    document.querySelectorAll('.pkg-check:checked').forEach(chk => {
+        packageTotal += parseInt(chk.dataset.price || 0);
+    });
+
+    let addonsTotal = 0;
+    document.querySelectorAll('.ingredient-check:checked').forEach(chk => {
+        addonsTotal += parseInt(chk.dataset.price || 0);
+    });
+
+    let garlicTotal = 0;
+    const garlicCheck = document.getElementById('garlic-checkbox');
+    const garlicDisplay = document.getElementById('garlic-price-display');
+
+    if (garlicCheck.checked) {
+        garlicTotal = packageTotal + 20;
+        garlicDisplay.textContent = `₱${garlicTotal} (Package + ₱20)`;
+        garlicDisplay.style.color = 'var(--ios-blue)';
+    } else {
+        garlicDisplay.textContent = 'Package + ₱20';
+        garlicDisplay.style.color = 'var(--ios-text-secondary)';
+    }
+
+    const total = packageTotal + addonsTotal + garlicTotal;
     document.getElementById('live-total').textContent = `₱${total.toLocaleString()}`;
     return total;
 }
@@ -107,6 +128,7 @@ function handleTransactionSubmit(e) {
 
     const ingredients = [];
     document.querySelectorAll('.ingredient-check:checked').forEach(chk => ingredients.push(chk.value));
+    if (document.getElementById('garlic-checkbox').checked) ingredients.push("Garlic Clove");
 
     const formData = {
         client: document.getElementById('client').value,
@@ -165,8 +187,12 @@ function loadTransactionForEdit(id) {
 
     if (t.ingredients) {
         t.ingredients.forEach(ing => {
-            const el = document.querySelector(`.ingredient-check[value="${ing}"]`);
-            if (el) el.checked = true;
+            if (ing === "Garlic Clove") {
+                document.getElementById('garlic-checkbox').checked = true;
+            } else {
+                const el = document.querySelector(`.ingredient-check[value="${ing}"]`);
+                if (el) el.checked = true;
+            }
         });
     }
 

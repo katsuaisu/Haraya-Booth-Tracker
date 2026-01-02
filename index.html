@@ -144,13 +144,6 @@
                                 <div class="ios-section-title">Make Your Own Mix / Add-ons</div>
                                 <div class="ios-grid-3">
                                     <label class="ios-mini-card">
-                                        <input type="checkbox" id="garlic-addon" class="ingredient-check"
-                                            value="Garlic Clove" data-price="20" onchange="calculateLiveTotal()">
-                                        <div class="checkmark-circle small"></div>
-                                        <span class="mini-label">Garlic Clove (+₱20)</span>
-                                    </label>
-
-                                    <label class="ios-mini-card">
                                         <input type="checkbox" class="ingredient-check" value="Flour" data-price="30"
                                             onchange="calculateLiveTotal()">
                                         <div class="checkmark-circle small"></div>
@@ -251,6 +244,19 @@
                                 </div>
 
                                 <div class="ios-section-title">For The Target</div>
+                                <div class="ios-grid-2">
+                                    <label class="ios-card-item full-width">
+                                        <div class="card-content">
+                                            <span class="row-main">Garlic Clove</span>
+                                            <span class="row-sub" id="garlic-price-display">Package + ₱20</span>
+                                        </div>
+                                        <div class="check-container">
+                                            <input type="checkbox" id="garlic-checkbox" class="garlic-check"
+                                                value="Garlic Clove" onchange="calculateLiveTotal()">
+                                            <div class="checkmark-circle"></div>
+                                        </div>
+                                    </label>
+                                </div>
                                 <div class="ios-grid-3">
                                     <label class="ios-mini-card">
                                         <input type="checkbox" class="ingredient-check" value="Rinse" data-price="15"
