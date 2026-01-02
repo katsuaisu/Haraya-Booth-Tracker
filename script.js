@@ -92,6 +92,12 @@ function calculateLiveTotal() {
         packageTotal += parseInt(chk.dataset.price || 0);
     });
 
+    // Calculate Mix total specifically for Garlic base logic
+    let mixTotal = 0;
+    document.querySelectorAll('.mix-check:checked').forEach(chk => {
+        mixTotal += parseInt(chk.dataset.price || 0);
+    });
+
     let addonsTotal = 0;
     document.querySelectorAll('.ingredient-check:checked').forEach(chk => {
         addonsTotal += parseInt(chk.dataset.price || 0);
@@ -102,8 +108,9 @@ function calculateLiveTotal() {
     const garlicDisplay = document.getElementById('garlic-price-display');
 
     if (garlicCheck.checked) {
-        garlicTotal = packageTotal + 20;
-        garlicDisplay.textContent = `₱${garlicTotal} (Package + ₱20)`;
+        // Now includes Mix Total in the base price
+        garlicTotal = (packageTotal + mixTotal) + 20;
+        garlicDisplay.textContent = `₱${garlicTotal} (Base + ₱20)`;
         garlicDisplay.style.color = 'var(--ios-blue)';
     } else {
         garlicDisplay.textContent = 'Package + ₱20';
