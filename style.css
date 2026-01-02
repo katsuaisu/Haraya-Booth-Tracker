@@ -635,7 +635,7 @@ input:checked+.checkmark-circle::after {
         padding: 16px;
         overflow: visible;
         padding-bottom: 220px;
-        
+
     }
 
     .split-view {
@@ -647,7 +647,7 @@ input:checked+.checkmark-circle::after {
         grid-template-columns: 1fr 1fr;
     }
 
-    
+
     .form-footer {
         position: fixed;
         bottom: 0;
