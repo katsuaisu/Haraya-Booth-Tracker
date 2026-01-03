@@ -1,7 +1,8 @@
 const DEFAULT_COSTS = {
-    'Oil': 50, 'Flour': 30, 'Laundry Detergent': 40, 'Soy Sauce': 30,
-    'Fish Sauce': 30, 'Cooking Oil': 50, 'Milk': 50, 'Whipped Cream': 50,
-    'Confetti': 30, 'Ketchup': 50, 'Mayo': 50, 'Mustard': 50
+    'Oil': 60, 'Flour': 35, 'Laundry Detergent': 60, 'Soy Sauce': 60,
+    'Fish Sauce': 35, 'Cooking Oil': 60, 'Milk': 60, 'Whipped Cream': 60,
+    'Confetti': 35, 'Ketchup': 60, 'Mayo': 60, 'Mustard': 60,
+    'Vinegar': 35
 };
 
 const DEFAULT_MATERIALS = Object.keys(DEFAULT_COSTS).reduce((acc, name) => {
@@ -14,6 +15,8 @@ let state = {
     materials: JSON.parse(JSON.stringify(DEFAULT_MATERIALS)),
     materialCosts: JSON.parse(JSON.stringify(DEFAULT_COSTS))
 };
+
+let currentSearchMode = 'name';
 
 document.addEventListener('DOMContentLoaded', () => {
     loadData();
@@ -92,7 +95,6 @@ function calculateLiveTotal() {
         packageTotal += parseInt(chk.dataset.price || 0);
     });
 
-    // Calculate Mix total specifically for Garlic base logic
     let mixTotal = 0;
     document.querySelectorAll('.mix-check:checked').forEach(chk => {
         mixTotal += parseInt(chk.dataset.price || 0);
@@ -108,7 +110,6 @@ function calculateLiveTotal() {
     const garlicDisplay = document.getElementById('garlic-price-display');
 
     if (garlicCheck.checked) {
-        // Now includes Mix Total in the base price
         garlicTotal = (packageTotal + mixTotal) + 20;
         garlicDisplay.textContent = `₱${garlicTotal} (Base + ₱20)`;
         garlicDisplay.style.color = 'var(--ios-blue)';
@@ -232,6 +233,13 @@ function confirmDelete() {
     });
 }
 
+function setSearchMode(mode) {
+    currentSearchMode = mode;
+    document.querySelectorAll('.segment-btn').forEach(btn => btn.classList.remove('active'));
+    document.getElementById(`search-btn-${mode}`).classList.add('active');
+    searchTransactions();
+}
+
 function searchTransactions() {
     const query = document.getElementById('search-input').value.toLowerCase();
 
@@ -240,10 +248,16 @@ function searchTransactions() {
         return;
     }
 
-    const filtered = state.transactions.filter(t =>
-        t.client.toLowerCase().includes(query) ||
-        t.nominee.toLowerCase().includes(query)
-    );
+    const filtered = state.transactions.filter(t => {
+        if (currentSearchMode === 'name') {
+            return t.client.toLowerCase().includes(query) || t.nominee.toLowerCase().includes(query);
+        } else if (currentSearchMode === 'batch') {
+            return t.batch.toLowerCase().includes(query);
+        } else if (currentSearchMode === 'status') {
+            return t.status.toLowerCase().includes(query);
+        }
+        return false;
+    });
 
     renderHistory(filtered);
 }

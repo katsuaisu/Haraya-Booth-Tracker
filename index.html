@@ -57,7 +57,7 @@
                                 <div class="ios-list">
                                     <div class="ios-row">
                                         <label>Client</label>
-                                        <input type="text" id="client" required placeholder="John Doe">
+                                        <input type="text" id="client" required placeholder="Full Name">
                                     </div>
                                     <div class="ios-row">
                                         <label>Target</label>
@@ -145,86 +145,86 @@
                                 <div class="ios-grid-3">
                                     <label class="ios-mini-card">
                                         <input type="checkbox" class="ingredient-check mix-check" value="Flour"
-                                            data-price="30" onchange="calculateLiveTotal()">
+                                            data-price="35" onchange="calculateLiveTotal()">
                                         <div class="checkmark-circle small"></div>
-                                        <span class="mini-label">Flour (+₱30)</span>
+                                        <span class="mini-label">Flour (+₱35)</span>
                                     </label>
 
                                     <label class="ios-mini-card">
                                         <input type="checkbox" class="ingredient-check mix-check" value="Soy Sauce"
-                                            data-price="30" onchange="calculateLiveTotal()">
+                                            data-price="60" onchange="calculateLiveTotal()">
                                         <div class="checkmark-circle small"></div>
-                                        <span class="mini-label">Soy Sauce (+₱30)</span>
+                                        <span class="mini-label">Soy Sauce (+₱60)</span>
                                     </label>
 
                                     <label class="ios-mini-card">
                                         <input type="checkbox" class="ingredient-check mix-check" value="Fish Sauce"
-                                            data-price="30" onchange="calculateLiveTotal()">
+                                            data-price="35" onchange="calculateLiveTotal()">
                                         <div class="checkmark-circle small"></div>
-                                        <span class="mini-label">Fish Sauce (+₱30)</span>
+                                        <span class="mini-label">Fish Sauce (+₱35)</span>
                                     </label>
 
                                     <label class="ios-mini-card">
                                         <input type="checkbox" class="ingredient-check mix-check" value="Vinegar"
-                                            data-price="30" onchange="calculateLiveTotal()">
+                                            data-price="35" onchange="calculateLiveTotal()">
                                         <div class="checkmark-circle small"></div>
-                                        <span class="mini-label">Vinegar (+₱30)</span>
+                                        <span class="mini-label">Vinegar (+₱35)</span>
                                     </label>
 
                                     <label class="ios-mini-card">
                                         <input type="checkbox" class="ingredient-check mix-check" value="Confetti"
-                                            data-price="30" onchange="calculateLiveTotal()">
+                                            data-price="35" onchange="calculateLiveTotal()">
                                         <div class="checkmark-circle small"></div>
-                                        <span class="mini-label">Confetti (+₱30)</span>
+                                        <span class="mini-label">Confetti (+₱35)</span>
                                     </label>
 
                                     <label class="ios-mini-card">
                                         <input type="checkbox" class="ingredient-check mix-check" value="Cooking Oil"
-                                            data-price="50" onchange="calculateLiveTotal()">
+                                            data-price="60" onchange="calculateLiveTotal()">
                                         <div class="checkmark-circle small"></div>
-                                        <span class="mini-label">Oil (+₱50)</span>
+                                        <span class="mini-label">Oil (+₱60)</span>
                                     </label>
 
                                     <label class="ios-mini-card">
                                         <input type="checkbox" class="ingredient-check mix-check" value="Whipped Cream"
-                                            data-price="50" onchange="calculateLiveTotal()">
+                                            data-price="60" onchange="calculateLiveTotal()">
                                         <div class="checkmark-circle small"></div>
-                                        <span class="mini-label">W. Cream (+₱50)</span>
+                                        <span class="mini-label">W. Cream (+₱60)</span>
                                     </label>
 
                                     <label class="ios-mini-card">
                                         <input type="checkbox" class="ingredient-check mix-check" value="Ketchup"
-                                            data-price="50" onchange="calculateLiveTotal()">
+                                            data-price="60" onchange="calculateLiveTotal()">
                                         <div class="checkmark-circle small"></div>
-                                        <span class="mini-label">Ketchup (+₱50)</span>
+                                        <span class="mini-label">Ketchup (+₱60)</span>
                                     </label>
 
                                     <label class="ios-mini-card">
                                         <input type="checkbox" class="ingredient-check mix-check" value="Mayo"
-                                            data-price="50" onchange="calculateLiveTotal()">
+                                            data-price="60" onchange="calculateLiveTotal()">
                                         <div class="checkmark-circle small"></div>
-                                        <span class="mini-label">Mayo (+₱50)</span>
+                                        <span class="mini-label">Mayo (+₱60)</span>
                                     </label>
 
                                     <label class="ios-mini-card">
                                         <input type="checkbox" class="ingredient-check mix-check" value="Mustard"
-                                            data-price="50" onchange="calculateLiveTotal()">
+                                            data-price="60" onchange="calculateLiveTotal()">
                                         <div class="checkmark-circle small"></div>
-                                        <span class="mini-label">Mustard (+₱50)</span>
+                                        <span class="mini-label">Mustard (+₱60)</span>
                                     </label>
 
                                     <label class="ios-mini-card">
                                         <input type="checkbox" class="ingredient-check mix-check" value="Milk"
-                                            data-price="50" onchange="calculateLiveTotal()">
+                                            data-price="60" onchange="calculateLiveTotal()">
                                         <div class="checkmark-circle small"></div>
-                                        <span class="mini-label">Milk (+₱50)</span>
+                                        <span class="mini-label">Milk (+₱60)</span>
                                     </label>
 
                                     <label class="ios-mini-card">
                                         <input type="checkbox" class="ingredient-check mix-check" value="Laundry Powder"
-                                            data-price="50" onchange="calculateLiveTotal()">
+                                            data-price="60" onchange="calculateLiveTotal()">
                                         <div class="checkmark-circle small"></div>
-                                        <span class="mini-label">L. Powder (+₱50)</span>
+                                        <span class="mini-label">L. Powder (+₱60)</span>
                                     </label>
                                 </div>
 
@@ -324,8 +324,16 @@
                                 <h3>History</h3>
                                 <div class="search-container">
                                     <span class="search-icon">🔍</span>
-                                    <input type="text" id="search-input" placeholder="Search name..."
+                                    <input type="text" id="search-input" placeholder="Search..."
                                         oninput="searchTransactions()">
+                                </div>
+                                <div class="segment-control">
+                                    <button class="segment-btn active" id="search-btn-name"
+                                        onclick="setSearchMode('name')">Name</button>
+                                    <button class="segment-btn" id="search-btn-batch"
+                                        onclick="setSearchMode('batch')">Batch</button>
+                                    <button class="segment-btn" id="search-btn-status"
+                                        onclick="setSearchMode('status')">Status</button>
                                 </div>
                             </div>
 
@@ -367,29 +375,56 @@
                 </header>
 
                 <div class="card reminder-text-card">
-                    <ol class="reminder-static-list">
-                        <li>
-                            If your device can no longer be used, save your data file (Export JSON) and send it the
-                            server with the text <strong>"[TIME] [NAME] Data File]"</strong> to make it easier to find.
-                            This file makes it easier for the switching of devices since this website relies on local
-                            storage.
-                        </li>
-                        <li>
-                            If the sending cannot persist, please send a screenshot of the full history and the total
-                            revenue and send it in the server with the text <strong>"[TIME] [NAME] Screenshots"</strong>
-                        </li>
-                        <li>
-                            The only valid reason to leave your post is if you need to go to the CR.
-                        </li>
-                        <li>
-                            If somebody will be assassinating a member on shift, place their transaction as <strong>"Not
-                                Found"</strong> until their shift is over.
-                        </li>
-                        <li>
-                            Make sure the chit box is organized at all times. The total revenue should match the chit
-                            box's current value.
-                        </li>
-                    </ol>
+                    <div class="reminder-section">
+                        <h3>Frequently Asked Questions</h3>
+                        <div class="qa-item">
+                            <div class="qa-question">Is there a limit to assassination?</div>
+                            <div class="qa-answer">There are NO LIMITS to assassinating somebody and in bailing.</div>
+                        </div>
+                        <div class="qa-item">
+                            <div class="qa-question">What if the target cannot be found?</div>
+                            <div class="qa-answer">Prioritize persuading the client to pick somebody else. If they do
+                                not want to, refund HALF of what they paid.</div>
+                        </div>
+                        <div class="qa-item">
+                            <div class="qa-question">What if an ingredient is out of stock?</div>
+                            <div class="qa-answer">Ask the client to pick another ingredient from the add-ons.</div>
+                        </div>
+                        <div class="qa-item">
+                            <div class="qa-question">What about members on shift?</div>
+                            <div class="qa-answer">If somebody will be assassinating a member on shift, place their
+                                transaction as <strong>"Not Found"</strong> until their shift is over.</div>
+                        </div>
+                        <div class="qa-item">
+                            <div class="qa-question">I have a question about my role/the website. Who can I direct it
+                                to?</div>
+                            <div class="qa-answer">Please look for a <strong>Strontium Officer</strong> (Keone Robles,
+                                Amber Buico,
+                                Emma Tancinco, Maggie Tan, and Jairo Reolizo) or a <strong>Booth Head</strong> (Rei
+                                Saquing, Uno Dulay,
+                                and Joshua Mallari)</div>
+                        </div>
+                    </div>
+
+                    <div class="reminder-section">
+                        <h3>General Reminders</h3>
+                        <ul class="reminder-list">
+                            <li>Make sure to get the client's <strong>FULL name</strong> for contacting purposes.</li>
+                            <li>Make sure the chit box is organized at all times. The total revenue should match the
+                                chit box's current value.</li>
+                            <li>The only valid reason to leave your post is if you need to go to the CR.</li>
+                            <li>
+                                If your device can no longer be used, save your data file (Export JSON) and send it the
+                                server with the caption <strong>"[TIME] [NAME] Data File]"</strong>. Do not change the
+                                file name.
+                            </li>
+                            <li>
+                                If the sending cannot persist, please send a screenshot of the full history and the
+                                total revenue and send it in the server with the caption <strong>"[TIME] [NAME]
+                                    Screenshots"</strong>. Do not change the file name.
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
 
