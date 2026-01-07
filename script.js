@@ -1,6 +1,6 @@
 const DEFAULT_COSTS = {
-    'Oil': 60, 'Flour': 35, 'Laundry Detergent': 60, 'Soy Sauce': 60,
-    'Fish Sauce': 35, 'Cooking Oil': 60, 'Milk': 60, 'Whipped Cream': 60,
+    'Oil': 60, 'Flour': 35, 'Laundry Detergent': 35, 'Soy Sauce': 60,
+    'Fish Sauce': 60, 'Cooking Oil': 60, 'Milk': 60, 'Whipped Cream': 60,
     'Confetti': 35, 'Ketchup': 60, 'Mayo': 60, 'Mustard': 60,
     'Vinegar': 35
 };
@@ -17,6 +17,7 @@ let state = {
 };
 
 let currentSearchMode = 'name';
+const DEBT_GOAL = 32300;
 
 document.addEventListener('DOMContentLoaded', () => {
     loadData();
@@ -29,7 +30,6 @@ function showIOSAlert(title, message, isConfirmation = false, onConfirm = null) 
     const overlay = document.getElementById('ios-modal-overlay');
     document.getElementById('modal-title').textContent = title;
     document.getElementById('modal-message').textContent = message;
-
     const actions = document.getElementById('modal-actions');
     actions.innerHTML = '';
 
@@ -52,13 +52,10 @@ function showIOSAlert(title, message, isConfirmation = false, onConfirm = null) 
         ok.onclick = closeModal;
         actions.appendChild(ok);
     }
-
     overlay.classList.remove('hidden');
 }
 
-function closeModal() {
-    document.getElementById('ios-modal-overlay').classList.add('hidden');
-}
+function closeModal() { document.getElementById('ios-modal-overlay').classList.add('hidden'); }
 
 function loadData() {
     const stored = localStorage.getItem('assassination_booth_data');
@@ -86,7 +83,8 @@ function switchTab(tabId) {
     const btns = document.querySelectorAll('.nav-btn');
     if (tabId === 'cashier') btns[0].classList.add('active');
     if (tabId === 'materials') btns[1].classList.add('active');
-    if (tabId === 'reminders') btns[2].classList.add('active');
+    if (tabId === 'debt') btns[2].classList.add('active');
+    if (tabId === 'reminders') btns[3].classList.add('active');
 }
 
 function calculateLiveTotal() {
@@ -242,7 +240,6 @@ function setSearchMode(mode) {
 
 function searchTransactions() {
     const query = document.getElementById('search-input').value.toLowerCase();
-
     if (!query) {
         renderHistory();
         return;
@@ -258,14 +255,12 @@ function searchTransactions() {
         }
         return false;
     });
-
     renderHistory(filtered);
 }
 
 function renderHistory(dataOverride = null) {
     const container = document.getElementById('transaction-list');
     container.innerHTML = '';
-
     const dataToRender = dataOverride || state.transactions;
 
     if (dataToRender.length === 0) {
@@ -314,6 +309,33 @@ function getStatusColor(status) {
 function updateGlobalTotal() {
     const total = state.transactions.reduce((sum, t) => sum + t.cost, 0);
     document.getElementById('global-total').textContent = `₱${total.toLocaleString()}`;
+    renderDebt(total);
+}
+
+function renderDebt(revenue) {
+    const remaining = DEBT_GOAL - revenue;
+    const paidDisplay = document.getElementById('debt-paid');
+    const amountDisplay = document.getElementById('debt-amount');
+    const progressBar = document.getElementById('debt-progress');
+    const profitMsg = document.getElementById('profit-message');
+
+    paidDisplay.textContent = `₱${revenue.toLocaleString()}`;
+
+    const percentage = Math.min(100, Math.max(0, (revenue / DEBT_GOAL) * 100));
+    progressBar.style.width = `${percentage}%`;
+
+    if (remaining <= 0) {
+        amountDisplay.textContent = "Paid!";
+        amountDisplay.style.color = "var(--ios-green)";
+        profitMsg.classList.remove('hidden');
+        profitMsg.textContent = `🎉 In Profit: ₱${Math.abs(remaining).toLocaleString()}`;
+        progressBar.style.background = "var(--ios-green)";
+    } else {
+        amountDisplay.textContent = `₱${remaining.toLocaleString()}`;
+        amountDisplay.style.color = "var(--ios-text-primary)";
+        profitMsg.classList.add('hidden');
+        progressBar.style.background = "linear-gradient(90deg, var(--ios-blue), #5AC8FA)";
+    }
 }
 
 function renderMaterials() {
@@ -329,7 +351,7 @@ function renderMaterials() {
         const row = document.createElement('tr');
         row.innerHTML = `
             <td><strong>${key}</strong></td>
-             <td class="text-right"><input type="number" min="0" value="${costPerUnit}" onchange="updateMaterialCost('${key}', this.value)" style="width:70px"></td>
+            <td class="text-right"><input type="number" min="0" value="${costPerUnit}" onchange="updateMaterialCost('${key}', this.value)" style="width:70px"></td>
             <td class="text-right"><input type="number" min="0" value="${mat.bought}" onchange="updateMaterial('${key}', 'bought', this.value)"></td>
             <td class="text-right"><input type="number" min="0" value="${mat.finished}" onchange="updateMaterial('${key}', 'finished', this.value)"></td>
             <td class="text-right"><input type="number" min="0" value="${mat.buyMore}" onchange="updateMaterial('${key}', 'buyMore', this.value)"></td>

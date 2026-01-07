@@ -2,6 +2,8 @@
     --ios-blue: #007AFF;
     --ios-blue-dim: rgba(0, 122, 255, 0.1);
     --ios-red: #FF3B30;
+    --ios-green: #34C759;
+    --ios-orange: #FF9500;
     --ios-gray-bg: #F2F2F7;
     --ios-card-bg: #FFFFFF;
     --ios-text-primary: #1C1C1E;
@@ -172,7 +174,6 @@ body {
     align-items: start;
 }
 
-
 .form-footer {
     position: sticky;
     bottom: 0;
@@ -245,16 +246,26 @@ body {
     flex: 1;
     display: flex;
     justify-content: flex-end;
+    position: relative;
 }
 
-.ios-row select {
+.ios-select {
+    appearance: none;
+    -webkit-appearance: none;
     border: none;
-    background: transparent;
+    background-color: #f2f2f7;
     font-size: 16px;
     color: var(--ios-blue);
     outline: none;
-    text-align: right;
-    direction: rtl;
+    text-align: center;
+    padding: 6px 30px 6px 14px;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23007AFF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 6px center;
+    background-size: 14px;
 }
 
 .ios-grid-2 {
@@ -590,9 +601,88 @@ input:checked+.checkmark-circle::after {
     margin-bottom: 12px;
 }
 
-.reminder-list strong {
+.debt-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    padding-top: 20px;
+}
+
+.debt-card {
+    background: white;
+    width: 100%;
+    max-width: 500px;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+    text-align: center;
+}
+
+.debt-header {
+    font-size: 16px;
     font-weight: 600;
-    color: var(--ios-blue);
+    color: var(--ios-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+}
+
+.debt-amount {
+    font-size: 56px;
+    font-weight: 800;
+    color: var(--ios-text-primary);
+    margin-bottom: 30px;
+    letter-spacing: -2px;
+}
+
+.progress-bg {
+    background: #E5E5EA;
+    height: 16px;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 30px;
+}
+
+.progress-fill {
+    background: linear-gradient(90deg, var(--ios-blue), #5AC8FA);
+    height: 100%;
+    width: 0%;
+    transition: width 0.5s ease-out;
+    border-radius: 8px;
+}
+
+.debt-stats {
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid #E5E5EA;
+    padding-top: 20px;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-label {
+    font-size: 12px;
+    color: var(--ios-text-secondary);
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.stat-val {
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 4px;
+}
+
+#profit-message {
+    margin-top: 20px;
+    font-weight: 700;
+    color: var(--ios-green);
+    font-size: 18px;
+    animation: fadeIn 0.5s;
 }
 
 .hidden {
@@ -657,7 +747,7 @@ input:checked+.checkmark-circle::after {
     border-left: 0.5px solid #3c3c434a;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
     .app-container {
         flex-direction: column;
         overflow-y: auto;
@@ -676,11 +766,14 @@ input:checked+.checkmark-circle::after {
     .nav-links {
         margin-top: 0;
         flex-direction: row;
+        overflow-x: auto;
+        padding-bottom: 5px;
     }
 
     .nav-btn {
         justify-content: center;
         background: #E5E5EA;
+        white-space: nowrap;
     }
 
     .data-controls {
@@ -691,7 +784,6 @@ input:checked+.checkmark-circle::after {
         padding: 16px;
         overflow: visible;
         padding-bottom: 220px;
-
     }
 
     .split-view {
@@ -702,7 +794,6 @@ input:checked+.checkmark-circle::after {
     .ios-grid-3 {
         grid-template-columns: 1fr 1fr;
     }
-
 
     .form-footer {
         position: fixed;

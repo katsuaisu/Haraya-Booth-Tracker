@@ -9,14 +9,12 @@
 </head>
 
 <body>
-
     <div class="app-container">
         <nav class="sidebar">
             <div class="logo-area">
                 <h1>The Booth</h1>
                 <p class="subtitle">Management Console</p>
             </div>
-
             <div class="nav-links">
                 <button class="nav-btn active" onclick="switchTab('cashier')">
                     <span class="icon">💳</span> Cashier
@@ -24,11 +22,13 @@
                 <button class="nav-btn" onclick="switchTab('materials')">
                     <span class="icon">📦</span> Materials
                 </button>
+                <button class="nav-btn" onclick="switchTab('debt')">
+                    <span class="icon">📉</span> Debt Tracker
+                </button>
                 <button class="nav-btn" onclick="switchTab('reminders')">
                     <span class="icon">🔔</span> Reminders
                 </button>
             </div>
-
             <div class="data-controls">
                 <div class="total-spent-display">
                     <label>Total Revenue</label>
@@ -41,17 +41,14 @@
         </nav>
 
         <main class="content-area">
-
             <div id="tab-cashier" class="tab-content active">
                 <header class="tab-header">
                     <h2>New Transaction</h2>
                 </header>
-
                 <div class="split-view">
                     <div class="form-column">
                         <form id="transaction-form" onsubmit="handleTransactionSubmit(event)">
                             <input type="hidden" id="transaction-id" value="">
-
                             <div class="form-scrollable-content">
                                 <div class="ios-section-title">Details</div>
                                 <div class="ios-list">
@@ -66,7 +63,7 @@
                                     <div class="ios-row">
                                         <label>Batch</label>
                                         <div class="select-wrapper">
-                                            <select id="batch" required>
+                                            <select id="batch" required class="ios-select">
                                                 <option value="2031">2031</option>
                                                 <option value="2030">2030</option>
                                                 <option value="2029">2029</option>
@@ -82,11 +79,11 @@
                                 <div class="ios-grid-2">
                                     <label class="ios-card-item">
                                         <div class="card-content">
-                                            <span class="row-main">Keeping It Simple</span>
-                                            <span class="row-sub">₱50</span>
+                                            <span class="row-main">Alikabok ng Ulap</span>
+                                            <span class="row-sub">₱50 (Flour & Water)</span>
                                         </div>
                                         <div class="check-container">
-                                            <input type="checkbox" class="pkg-check" value="simple" data-price="50"
+                                            <input type="checkbox" class="pkg-check" value="alikabok" data-price="50"
                                                 onchange="calculateLiveTotal()">
                                             <div class="checkmark-circle"></div>
                                         </div>
@@ -94,20 +91,20 @@
 
                                     <label class="ios-card-item">
                                         <div class="card-content">
-                                            <span class="row-main">Laundry Day</span>
-                                            <span class="row-sub">₱70</span>
+                                            <span class="row-main">Ang Huling Banlaw</span>
+                                            <span class="row-sub">₱70 (Diluted Detergent)</span>
                                         </div>
                                         <div class="check-container">
-                                            <input type="checkbox" class="pkg-check" value="laundry" data-price="70"
-                                                onchange="calculateLiveTotal()">
+                                            <input type="checkbox" class="pkg-check" value="hulingbanlaw"
+                                                data-price="70" onchange="calculateLiveTotal()">
                                             <div class="checkmark-circle"></div>
                                         </div>
                                     </label>
 
                                     <label class="ios-card-item">
                                         <div class="card-content">
-                                            <span class="row-main">Let’s Cook A Meal!</span>
-                                            <span class="row-sub">₱130</span>
+                                            <span class="row-main">Panlasang Aswang</span>
+                                            <span class="row-sub">₱130 (Soy Sauce, Patis, Oil)</span>
                                         </div>
                                         <div class="check-container">
                                             <input type="checkbox" class="pkg-check" value="cook" data-price="130"
@@ -118,8 +115,8 @@
 
                                     <label class="ios-card-item">
                                         <div class="card-content">
-                                            <span class="row-main">Ice Cream Sundae</span>
-                                            <span class="row-sub">₱200</span>
+                                            <span class="row-main">Ang Tamis ng Huling Pagkakataon</span>
+                                            <span class="row-sub">₱200 (Milk, Cream, Confetti)</span>
                                         </div>
                                         <div class="check-container">
                                             <input type="checkbox" class="pkg-check" value="icecream" data-price="200"
@@ -130,8 +127,8 @@
 
                                     <label class="ios-card-item full-width">
                                         <div class="card-content">
-                                            <span class="row-main">Hotdog!</span>
-                                            <span class="row-sub">₱250</span>
+                                            <span class="row-main">Pinturang Alitaptap</span>
+                                            <span class="row-sub">₱250 (Ketchup, Mayo, Mustard)</span>
                                         </div>
                                         <div class="check-container">
                                             <input type="checkbox" class="pkg-check" value="hotdog" data-price="250"
@@ -141,7 +138,7 @@
                                     </label>
                                 </div>
 
-                                <div class="ios-section-title">Make Your Own Mix / Add-ons</div>
+                                <div class="ios-section-title">Sariling Saya</div>
                                 <div class="ios-grid-3">
                                     <label class="ios-mini-card">
                                         <input type="checkbox" class="ingredient-check mix-check" value="Flour"
@@ -149,82 +146,71 @@
                                         <div class="checkmark-circle small"></div>
                                         <span class="mini-label">Flour (+₱35)</span>
                                     </label>
-
                                     <label class="ios-mini-card">
                                         <input type="checkbox" class="ingredient-check mix-check" value="Soy Sauce"
                                             data-price="60" onchange="calculateLiveTotal()">
                                         <div class="checkmark-circle small"></div>
                                         <span class="mini-label">Soy Sauce (+₱60)</span>
                                     </label>
-
                                     <label class="ios-mini-card">
                                         <input type="checkbox" class="ingredient-check mix-check" value="Fish Sauce"
-                                            data-price="35" onchange="calculateLiveTotal()">
+                                            data-price="60" onchange="calculateLiveTotal()">
                                         <div class="checkmark-circle small"></div>
-                                        <span class="mini-label">Fish Sauce (+₱35)</span>
+                                        <span class="mini-label">Fish Sauce (+₱60)</span>
                                     </label>
-
                                     <label class="ios-mini-card">
                                         <input type="checkbox" class="ingredient-check mix-check" value="Vinegar"
                                             data-price="35" onchange="calculateLiveTotal()">
                                         <div class="checkmark-circle small"></div>
                                         <span class="mini-label">Vinegar (+₱35)</span>
                                     </label>
-
                                     <label class="ios-mini-card">
                                         <input type="checkbox" class="ingredient-check mix-check" value="Confetti"
                                             data-price="35" onchange="calculateLiveTotal()">
                                         <div class="checkmark-circle small"></div>
                                         <span class="mini-label">Confetti (+₱35)</span>
                                     </label>
-
                                     <label class="ios-mini-card">
                                         <input type="checkbox" class="ingredient-check mix-check" value="Cooking Oil"
                                             data-price="60" onchange="calculateLiveTotal()">
                                         <div class="checkmark-circle small"></div>
                                         <span class="mini-label">Oil (+₱60)</span>
                                     </label>
-
                                     <label class="ios-mini-card">
                                         <input type="checkbox" class="ingredient-check mix-check" value="Whipped Cream"
                                             data-price="60" onchange="calculateLiveTotal()">
                                         <div class="checkmark-circle small"></div>
                                         <span class="mini-label">W. Cream (+₱60)</span>
                                     </label>
-
                                     <label class="ios-mini-card">
                                         <input type="checkbox" class="ingredient-check mix-check" value="Ketchup"
                                             data-price="60" onchange="calculateLiveTotal()">
                                         <div class="checkmark-circle small"></div>
                                         <span class="mini-label">Ketchup (+₱60)</span>
                                     </label>
-
                                     <label class="ios-mini-card">
                                         <input type="checkbox" class="ingredient-check mix-check" value="Mayo"
                                             data-price="60" onchange="calculateLiveTotal()">
                                         <div class="checkmark-circle small"></div>
                                         <span class="mini-label">Mayo (+₱60)</span>
                                     </label>
-
                                     <label class="ios-mini-card">
                                         <input type="checkbox" class="ingredient-check mix-check" value="Mustard"
                                             data-price="60" onchange="calculateLiveTotal()">
                                         <div class="checkmark-circle small"></div>
                                         <span class="mini-label">Mustard (+₱60)</span>
                                     </label>
-
                                     <label class="ios-mini-card">
                                         <input type="checkbox" class="ingredient-check mix-check" value="Milk"
                                             data-price="60" onchange="calculateLiveTotal()">
                                         <div class="checkmark-circle small"></div>
                                         <span class="mini-label">Milk (+₱60)</span>
                                     </label>
-
                                     <label class="ios-mini-card">
                                         <input type="checkbox" class="ingredient-check mix-check" value="Laundry Powder"
-                                            data-price="60" onchange="calculateLiveTotal()">
+                                            data-price="35" onchange="calculateLiveTotal()">
                                         <div class="checkmark-circle small"></div>
-                                        <span class="mini-label">L. Powder (+₱60)</span>
+                                        <span class="mini-label">L. Powder (+₱35)</span>
                                     </label>
                                 </div>
 
@@ -232,8 +218,8 @@
                                 <div class="ios-grid-2">
                                     <label class="ios-card-item full-width">
                                         <div class="card-content">
-                                            <span class="row-main">Be The Dumper</span>
-                                            <span class="row-sub">₱10</span>
+                                            <span class="row-main">Ang Paghihiganti</span>
+                                            <span class="row-sub">₱10 (Be The Dumper)</span>
                                         </div>
                                         <div class="check-container">
                                             <input type="checkbox" class="ingredient-check" value="Dumper"
@@ -283,7 +269,7 @@
                                     <div class="ios-row">
                                         <label>Status</label>
                                         <div class="select-wrapper">
-                                            <select id="status" required>
+                                            <select id="status" required class="ios-select">
                                                 <option value="Chase">Chase</option>
                                                 <option value="Assassinated">Assassinated</option>
                                                 <option value="Bailed">Bailed</option>
@@ -301,20 +287,17 @@
                                     <span>Total</span>
                                     <span id="live-total">₱0</span>
                                 </div>
-
                                 <div class="action-buttons">
                                     <button type="submit" id="submit-btn" class="primary-btn">Complete
                                         Transaction</button>
                                     <button type="button" id="cancel-btn" class="secondary-btn hidden"
                                         onclick="cancelEdit()">Cancel</button>
                                 </div>
-
                                 <div id="delete-section" class="delete-section hidden">
                                     <button type="button" class="delete-btn" onclick="confirmDelete()">Delete
                                         Transaction</button>
                                 </div>
                             </div>
-
                         </form>
                     </div>
 
@@ -336,7 +319,6 @@
                                         onclick="setSearchMode('status')">Status</button>
                                 </div>
                             </div>
-
                             <div class="history-list" id="transaction-list">
                                 <div class="empty-state">No transactions yet.</div>
                             </div>
@@ -349,7 +331,6 @@
                 <header class="tab-header">
                     <h2>Materials Tracker</h2>
                 </header>
-
                 <div class="card table-card">
                     <table class="materials-table">
                         <thead>
@@ -363,9 +344,34 @@
                                 <th class="text-right">Est. Cost</th>
                             </tr>
                         </thead>
-                        <tbody id="materials-body">
-                        </tbody>
+                        <tbody id="materials-body"></tbody>
                     </table>
+                </div>
+            </div>
+
+            <div id="tab-debt" class="tab-content">
+                <header class="tab-header">
+                    <h2>Debt Tracker</h2>
+                </header>
+                <div class="debt-wrapper">
+                    <div class="debt-card">
+                        <div class="debt-header">Remaining Debt</div>
+                        <div class="debt-amount" id="debt-amount">₱32,300</div>
+                        <div class="progress-bg">
+                            <div class="progress-fill" id="debt-progress"></div>
+                        </div>
+                        <div class="debt-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">Goal</span>
+                                <span class="stat-val">₱32,300</span>
+                            </div>
+                            <div class="stat-item text-right">
+                                <span class="stat-label">Paid (Revenue)</span>
+                                <span class="stat-val" id="debt-paid">₱0</span>
+                            </div>
+                        </div>
+                        <div id="profit-message" class="hidden">🎉 We are in profit!</div>
+                    </div>
                 </div>
             </div>
 
@@ -373,7 +379,6 @@
                 <header class="tab-header">
                     <h2>Cashier Reminders</h2>
                 </header>
-
                 <div class="card reminder-text-card">
                     <div class="reminder-section">
                         <h3>Frequently Asked Questions</h3>
@@ -399,13 +404,10 @@
                             <div class="qa-question">I have a question about my role/the website. Who can I direct it
                                 to?</div>
                             <div class="qa-answer">Please look for a <strong>Strontium Officer</strong> (Keone Robles,
-                                Amber Buico,
-                                Emma Tancinco, Maggie Tan, and Jairo Reolizo) or a <strong>Booth Head</strong> (Rei
-                                Saquing, Uno Dulay,
-                                and Joshua Mallari)</div>
+                                Amber Buico, Emma Tancinco, Maggie Tan, and Jairo Reolizo) or a <strong>Booth
+                                    Head</strong> (Rei Saquing, Uno Dulay, and Joshua Mallari).</div>
                         </div>
                     </div>
-
                     <div class="reminder-section">
                         <h3>General Reminders</h3>
                         <ul class="reminder-list">
@@ -413,21 +415,16 @@
                             <li>Make sure the chit box is organized at all times. The total revenue should match the
                                 chit box's current value.</li>
                             <li>The only valid reason to leave your post is if you need to go to the CR.</li>
-                            <li>
-                                If your device can no longer be used, save your data file (Export JSON) and send it the
-                                server with the caption <strong>"[TIME] [NAME] Data File]"</strong>. Do not change the
-                                file name.
-                            </li>
-                            <li>
-                                If the sending cannot persist, please send a screenshot of the full history and the
-                                total revenue and send it in the server with the caption <strong>"[TIME] [NAME]
-                                    Screenshots"</strong>. Do not change the file name.
-                            </li>
+                            <li>If your device can no longer be used, save your data file (Export JSON) and send it the
+                                server with the caption <code>[TIME] [NAME] Data File]</code>. Do not change the file
+                                name.</li>
+                            <li>If the sending cannot persist, please send a screenshot of the full history and the
+                                total revenue and send it in the server with the caption
+                                <code>[TIME] [NAME] Screenshots</code>. Do not change the file name.</li>
                         </ul>
                     </div>
                 </div>
             </div>
-
         </main>
     </div>
 
