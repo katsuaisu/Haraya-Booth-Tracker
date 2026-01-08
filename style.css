@@ -517,11 +517,57 @@ input:checked+.checkmark-circle::after {
 .history-item {
     padding: 12px 0;
     border-bottom: 0.5px solid #E5E5EA;
+}
+
+.history-item-content {
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.history-item-content:hover {
+    opacity: 0.7;
+}
+
+.clickable-tag {
+    cursor: pointer;
+    color: var(--ios-blue);
+    text-decoration: underline;
+    text-decoration-style: dotted;
+}
+
+.clickable-tag:hover {
+    font-weight: 700;
+}
+
+.pagination-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 0.5px solid var(--ios-separator);
+}
+
+.page-btn {
+    background: var(--ios-blue-dim);
+    color: var(--ios-blue);
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 13px;
     cursor: pointer;
 }
 
-.history-item:hover {
-    opacity: 0.7;
+.page-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.page-info {
+    font-size: 13px;
+    color: var(--ios-text-secondary);
+    font-weight: 500;
 }
 
 .materials-table {
@@ -710,7 +756,7 @@ input:checked+.checkmark-circle::after {
 .ios-modal {
     background: rgba(255, 255, 255, 0.9);
     backdrop-filter: blur(20px);
-    width: 270px;
+    width: 290px;
     border-radius: 14px;
     text-align: center;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
@@ -745,6 +791,29 @@ input:checked+.checkmark-circle::after {
 .modal-actions button.destructive {
     color: var(--ios-red);
     border-left: 0.5px solid #3c3c434a;
+}
+
+@keyframes ios-flash {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.2;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.urgent-alert-text {
+    color: var(--ios-red);
+    font-weight: 900;
+    font-size: 20px;
+    animation: ios-flash 0.6s infinite;
+    display: block;
+    margin-top: 10px;
 }
 
 @media (max-width: 1024px) {

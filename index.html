@@ -61,6 +61,10 @@
                                         <input type="text" id="nominee" required placeholder="Target Name">
                                     </div>
                                     <div class="ios-row">
+                                        <label>Section</label>
+                                        <input type="text" id="section" placeholder="Target Section">
+                                    </div>
+                                    <div class="ios-row">
                                         <label>Batch</label>
                                         <div class="select-wrapper">
                                             <select id="batch" required class="ios-select">
@@ -88,7 +92,6 @@
                                             <div class="checkmark-circle"></div>
                                         </div>
                                     </label>
-
                                     <label class="ios-card-item">
                                         <div class="card-content">
                                             <span class="row-main">Ang Huling Banlaw</span>
@@ -100,7 +103,6 @@
                                             <div class="checkmark-circle"></div>
                                         </div>
                                     </label>
-
                                     <label class="ios-card-item">
                                         <div class="card-content">
                                             <span class="row-main">Panlasang Aswang</span>
@@ -112,7 +114,6 @@
                                             <div class="checkmark-circle"></div>
                                         </div>
                                     </label>
-
                                     <label class="ios-card-item">
                                         <div class="card-content">
                                             <span class="row-main">Ang Tamis ng Huling Pagkakataon</span>
@@ -124,7 +125,6 @@
                                             <div class="checkmark-circle"></div>
                                         </div>
                                     </label>
-
                                     <label class="ios-card-item full-width">
                                         <div class="card-content">
                                             <span class="row-main">Pinturang Alitaptap</span>
@@ -321,6 +321,11 @@
                             </div>
                             <div class="history-list" id="transaction-list">
                                 <div class="empty-state">No transactions yet.</div>
+                            </div>
+                            <div class="pagination-controls" id="pagination">
+                                <button class="page-btn" id="prev-page" onclick="changePage(-1)">Previous</button>
+                                <span class="page-info" id="page-info">Page 1 of 1</span>
+                                <button class="page-btn" id="next-page" onclick="changePage(1)">Next</button>
                             </div>
                         </div>
                     </div>

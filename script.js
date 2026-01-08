@@ -17,6 +17,8 @@ let state = {
 };
 
 let currentSearchMode = 'name';
+let currentPage = 1;
+const itemsPerPage = 7;
 const DEBT_GOAL = 32300;
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -24,26 +26,25 @@ document.addEventListener('DOMContentLoaded', () => {
     renderMaterials();
     renderHistory();
     calculateLiveTotal();
+    showWelcomeMessage();
+    startUrgentTimer();
 });
 
 function showIOSAlert(title, message, isConfirmation = false, onConfirm = null) {
     const overlay = document.getElementById('ios-modal-overlay');
     document.getElementById('modal-title').textContent = title;
-    document.getElementById('modal-message').textContent = message;
+    document.getElementById('modal-message').innerHTML = message;
     const actions = document.getElementById('modal-actions');
     actions.innerHTML = '';
-
     if (isConfirmation) {
         const cancel = document.createElement('button');
         cancel.textContent = 'Cancel';
         cancel.style.fontWeight = '400';
         cancel.onclick = closeModal;
-
         const confirm = document.createElement('button');
         confirm.textContent = 'Delete';
         confirm.className = 'destructive';
         confirm.onclick = () => { onConfirm(); closeModal(); };
-
         actions.appendChild(cancel);
         actions.appendChild(confirm);
     } else {
@@ -52,6 +53,29 @@ function showIOSAlert(title, message, isConfirmation = false, onConfirm = null) 
         ok.onclick = closeModal;
         actions.appendChild(ok);
     }
+    overlay.classList.remove('hidden');
+}
+
+function showWelcomeMessage() {
+    const msg = `This is an automated message sent by the creator of this website. If you are reading this, please make sure to do the following:<br><br>
+    1. Update the roles every 10 minutes to avoid continuity errors.<br>
+    2. Give the correct amount of change every time.<br>
+    3. Give the correct information to your fellow record-keeper.`;
+    showIOSAlert("Welcome, Cashier!", msg);
+}
+
+function startUrgentTimer() {
+    setInterval(() => {
+        showUrgentAlert();
+    }, 600000);
+}
+
+function showUrgentAlert() {
+    const overlay = document.getElementById('ios-modal-overlay');
+    document.getElementById('modal-title').textContent = "URGENT REMINDER";
+    document.getElementById('modal-message').innerHTML = '<span class="urgent-alert-text">UPDATE STATUSES & BAILS NOW!</span>';
+    const actions = document.getElementById('modal-actions');
+    actions.innerHTML = '<button onclick="closeModal()">✕ Dismiss</button>';
     overlay.classList.remove('hidden');
 }
 
@@ -79,7 +103,6 @@ function switchTab(tabId) {
     document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
     document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
     document.getElementById(`tab-${tabId}`).classList.add('active');
-
     const btns = document.querySelectorAll('.nav-btn');
     if (tabId === 'cashier') btns[0].classList.add('active');
     if (tabId === 'materials') btns[1].classList.add('active');
@@ -92,21 +115,17 @@ function calculateLiveTotal() {
     document.querySelectorAll('.pkg-check:checked').forEach(chk => {
         packageTotal += parseInt(chk.dataset.price || 0);
     });
-
     let mixTotal = 0;
     document.querySelectorAll('.mix-check:checked').forEach(chk => {
         mixTotal += parseInt(chk.dataset.price || 0);
     });
-
     let addonsTotal = 0;
     document.querySelectorAll('.ingredient-check:checked').forEach(chk => {
         addonsTotal += parseInt(chk.dataset.price || 0);
     });
-
     let garlicTotal = 0;
     const garlicCheck = document.getElementById('garlic-checkbox');
     const garlicDisplay = document.getElementById('garlic-price-display');
-
     if (garlicCheck.checked) {
         garlicTotal = (packageTotal + mixTotal) + 20;
         garlicDisplay.textContent = `₱${garlicTotal} (Base + ₱20)`;
@@ -115,7 +134,6 @@ function calculateLiveTotal() {
         garlicDisplay.textContent = 'Package + ₱20';
         garlicDisplay.style.color = 'var(--ios-text-secondary)';
     }
-
     const total = packageTotal + addonsTotal + garlicTotal;
     document.getElementById('live-total').textContent = `₱${total.toLocaleString()}`;
     return total;
@@ -125,20 +143,18 @@ function handleTransactionSubmit(e) {
     e.preventDefault();
     const cost = calculateLiveTotal();
     const editingId = document.getElementById('transaction-id').value;
-
     const selectedPackages = [];
     document.querySelectorAll('.pkg-check:checked').forEach(chk => {
         const label = chk.closest('.ios-card-item').querySelector('.row-main').textContent;
         selectedPackages.push(label);
     });
-
     const ingredients = [];
     document.querySelectorAll('.ingredient-check:checked').forEach(chk => ingredients.push(chk.value));
     if (document.getElementById('garlic-checkbox').checked) ingredients.push("Garlic Clove");
-
     const formData = {
         client: document.getElementById('client').value,
         nominee: document.getElementById('nominee').value,
+        section: document.getElementById('section').value,
         batch: document.getElementById('batch').value,
         packages: selectedPackages,
         ingredients: ingredients,
@@ -146,7 +162,6 @@ function handleTransactionSubmit(e) {
         notes: document.getElementById('notes').value,
         cost: cost,
     };
-
     if (editingId) {
         const index = state.transactions.findIndex(t => t.id == editingId);
         if (index !== -1) {
@@ -161,8 +176,8 @@ function handleTransactionSubmit(e) {
         };
         state.transactions.unshift(newTransaction);
     }
-
     saveData();
+    currentPage = 1;
     renderHistory();
     cancelEdit();
 }
@@ -170,16 +185,14 @@ function handleTransactionSubmit(e) {
 function loadTransactionForEdit(id) {
     const t = state.transactions.find(trans => trans.id === id);
     if (!t) return;
-
     document.getElementById('transaction-id').value = t.id;
     document.getElementById('client').value = t.client;
     document.getElementById('nominee').value = t.nominee;
+    document.getElementById('section').value = t.section || '';
     document.getElementById('batch').value = t.batch;
     document.getElementById('status').value = t.status;
     document.getElementById('notes').value = t.notes || '';
-
     document.querySelectorAll('input[type="checkbox"]').forEach(c => c.checked = false);
-
     const pkgList = Array.isArray(t.packages) ? t.packages : [t.packageLabel || t.package];
     pkgList.forEach(pkgName => {
         const rows = document.querySelectorAll('.pkg-check');
@@ -187,10 +200,7 @@ function loadTransactionForEdit(id) {
             const label = chk.closest('.ios-card-item').querySelector('.row-main').textContent;
             if (pkgName && label.includes(pkgName)) chk.checked = true;
         });
-        const valCheck = document.querySelector(`.pkg-check[value="${pkgName}"]`);
-        if (valCheck) valCheck.checked = true;
     });
-
     if (t.ingredients) {
         t.ingredients.forEach(ing => {
             if (ing === "Garlic Clove") {
@@ -201,12 +211,10 @@ function loadTransactionForEdit(id) {
             }
         });
     }
-
     document.getElementById('submit-btn').textContent = "Update Transaction";
     document.getElementById('cancel-btn').classList.remove('hidden');
     document.getElementById('delete-section').classList.remove('hidden');
     document.querySelector('.tab-header h2').textContent = "Edit Transaction";
-
     calculateLiveTotal();
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -235,66 +243,81 @@ function setSearchMode(mode) {
     currentSearchMode = mode;
     document.querySelectorAll('.segment-btn').forEach(btn => btn.classList.remove('active'));
     document.getElementById(`search-btn-${mode}`).classList.add('active');
+    currentPage = 1;
+    searchTransactions();
+}
+
+function quickSearch(mode, value) {
+    setSearchMode(mode);
+    document.getElementById('search-input').value = value;
     searchTransactions();
 }
 
 function searchTransactions() {
-    const query = document.getElementById('search-input').value.toLowerCase();
-    if (!query) {
-        renderHistory();
-        return;
-    }
-
-    const filtered = state.transactions.filter(t => {
-        if (currentSearchMode === 'name') {
-            return t.client.toLowerCase().includes(query) || t.nominee.toLowerCase().includes(query);
-        } else if (currentSearchMode === 'batch') {
-            return t.batch.toLowerCase().includes(query);
-        } else if (currentSearchMode === 'status') {
-            return t.status.toLowerCase().includes(query);
-        }
-        return false;
-    });
-    renderHistory(filtered);
+    currentPage = 1;
+    renderHistory();
 }
 
-function renderHistory(dataOverride = null) {
+function changePage(dir) {
+    currentPage += dir;
+    renderHistory();
+}
+
+function renderHistory() {
     const container = document.getElementById('transaction-list');
-    container.innerHTML = '';
-    const dataToRender = dataOverride || state.transactions;
-
-    if (dataToRender.length === 0) {
-        container.innerHTML = '<div class="empty-state" style="text-align:center; color:#8E8E93; padding:20px;">No transactions found.</div>';
-        return;
+    const query = document.getElementById('search-input').value.toLowerCase();
+    let dataToRender = state.transactions;
+    if (query) {
+        dataToRender = state.transactions.filter(t => {
+            if (currentSearchMode === 'name') {
+                return t.client.toLowerCase().includes(query) || t.nominee.toLowerCase().includes(query);
+            } else if (currentSearchMode === 'batch') {
+                return t.batch.toLowerCase().includes(query);
+            } else if (currentSearchMode === 'status') {
+                return t.status.toLowerCase().includes(query);
+            }
+            return false;
+        });
     }
-
-    dataToRender.forEach(t => {
-        const div = document.createElement('div');
-        div.className = 'history-item';
-        div.onclick = () => loadTransactionForEdit(t.id);
-
-        let pkgDisplay = "";
-        if (Array.isArray(t.packages) && t.packages.length > 0) {
-            pkgDisplay = t.packages.join(", ");
-        } else {
-            pkgDisplay = t.packageLabel || t.package || "Custom";
-        }
-
-        div.innerHTML = `
-            <div style="display:flex; justify-content:space-between; align-items:start;">
-                <div>
-                    <div style="font-weight:600; font-size:16px;">${t.nominee} <span style="color:#8E8E93; font-weight:400;">(${t.batch})</span></div>
-                    <div style="font-size:14px; color:#8E8E93; margin-top:2px;">${t.client}</div>
-                    <div style="font-size:13px; color:#333; margin-top:4px;">${pkgDisplay}</div>
+    const totalPages = Math.ceil(dataToRender.length / itemsPerPage) || 1;
+    if (currentPage > totalPages) currentPage = totalPages;
+    if (currentPage < 1) currentPage = 1;
+    const start = (currentPage - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    const pageData = dataToRender.slice(start, end);
+    container.innerHTML = '';
+    if (pageData.length === 0) {
+        container.innerHTML = '<div class="empty-state" style="text-align:center; color:#8E8E93; padding:20px;">No transactions found.</div>';
+    } else {
+        pageData.forEach(t => {
+            const div = document.createElement('div');
+            div.className = 'history-item';
+            let pkgDisplay = Array.isArray(t.packages) && t.packages.length > 0 ? t.packages.join(", ") : (t.packageLabel || t.package || "Custom");
+            div.innerHTML = `
+                <div class="history-item-content" onclick="loadTransactionForEdit(${t.id})">
+                    <div style="display:flex; justify-content:space-between; align-items:start;">
+                        <div>
+                            <div style="font-weight:600; font-size:16px;">${t.nominee}</div>
+                            <div style="font-size:14px; color:#8E8E93; margin-top:2px;">${t.client}</div>
+                            <div style="font-size:12px; color:var(--ios-blue); font-weight:500; margin-top:2px;">${t.section || 'No Section'}</div>
+                            <div style="font-size:13px; color:#333; margin-top:4px;">${pkgDisplay}</div>
+                        </div>
+                        <div style="text-align:right;">
+                            <div style="font-weight:700; color:#1C1C1E;">₱${t.cost.toLocaleString()}</div>
+                        </div>
+                    </div>
                 </div>
-                <div style="text-align:right;">
-                    <div style="font-weight:700; color:#1C1C1E;">₱${t.cost.toLocaleString()}</div>
-                    <div style="font-size:12px; margin-top:4px; font-weight:600; color:${getStatusColor(t.status)};">${t.status}</div>
+                <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:8px;">
+                     <span class="clickable-tag" style="font-size:12px;" onclick="quickSearch('batch', '${t.batch}')">${t.batch}</span>
+                     <span class="clickable-tag" style="font-size:12px; color:${getStatusColor(t.status)};" onclick="quickSearch('status', '${t.status}')">${t.status}</span>
                 </div>
-            </div>
-        `;
-        container.appendChild(div);
-    });
+            `;
+            container.appendChild(div);
+        });
+    }
+    document.getElementById('page-info').textContent = `Page ${currentPage} of ${totalPages}`;
+    document.getElementById('prev-page').disabled = currentPage === 1;
+    document.getElementById('next-page').disabled = currentPage === totalPages;
 }
 
 function getStatusColor(status) {
@@ -318,12 +341,9 @@ function renderDebt(revenue) {
     const amountDisplay = document.getElementById('debt-amount');
     const progressBar = document.getElementById('debt-progress');
     const profitMsg = document.getElementById('profit-message');
-
     paidDisplay.textContent = `₱${revenue.toLocaleString()}`;
-
     const percentage = Math.min(100, Math.max(0, (revenue / DEBT_GOAL) * 100));
     progressBar.style.width = `${percentage}%`;
-
     if (remaining <= 0) {
         amountDisplay.textContent = "Paid!";
         amountDisplay.style.color = "var(--ios-green)";
@@ -347,7 +367,6 @@ function renderMaterials() {
         const baseNeed = Math.max(0, mat.finished - mat.bought);
         const toBuy = baseNeed + (mat.buyMore || 0);
         const estCost = toBuy * costPerUnit;
-
         const row = document.createElement('tr');
         row.innerHTML = `
             <td><strong>${key}</strong></td>
@@ -390,6 +409,7 @@ function importData(input) {
         try {
             state = JSON.parse(e.target.result);
             saveData();
+            currentPage = 1;
             renderHistory();
             renderMaterials();
             showIOSAlert('Success', 'Database restored.');
